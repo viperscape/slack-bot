@@ -19,7 +19,8 @@
 
 (defn load-slackers []
   (reset! slackers (parse-string (slurp "slackers.txt"))))
-(load-slackers)
+
+(load-slackers) ;;load me up, make sure at the least the file exists
 
 (defn register-slacker [n t]
   (swap! slackers assoc n t)
@@ -85,6 +86,7 @@
                           (str "slack-bot" (rand-int 100))
                           :callbacks {:privmsg priv-msg
                                       :notice notify-msg})]
-    (irc/join conn "#mychannel")
+    (doseq [n args]
+      (irc/join conn (str "#" n)))
     (start-handler handler)
     conn))
